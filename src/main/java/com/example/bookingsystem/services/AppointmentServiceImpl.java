@@ -50,6 +50,8 @@ public class AppointmentServiceImpl implements AppointmentService, Runnable{
 	}
 	
 
+	//this method books Appointment for the user data entered in the system and sends email to the user.
+	//Multithreaded implementaion for booking and sending email.
 	@Override
 	public Appointment bookAppointment(AppointmentDTO appointmentDTO) throws IOException {
 		// TODO Auto-generated method stub
@@ -60,11 +62,14 @@ public class AppointmentServiceImpl implements AppointmentService, Runnable{
 		Boolean flag1=false;
 		Boolean flag2=false;
 		
+		//compare the employees appointments to the current selected appointment
 		for(Appointment eachAppointment : appointmentList) {
 			if(eachAppointment.getAppointmentDateTime().isEqual(appointmentDTO.getAppointment())) {
 				flag1=true;
 			}
 		}
+		
+		//compare the timings map and selected time fom DTO and check if they match
 		Map<String, LocalDateTime> timings = UserServiceImpl.timings;
 		for(String str :timings.keySet()) {
 			if(timings.get(str).isEqual(appointmentDTO.getAppointment())) {
@@ -86,6 +91,8 @@ public class AppointmentServiceImpl implements AppointmentService, Runnable{
 			appointment.setEmployee(employee);
 			appointment.setUser(saveUser);
 			saveAppointment = appointmentRepository.save(appointment);
+			
+			//set email body to be sent.
 			email.setEmailBody("Dear Sir/Maam, \n Your appointmnet is confirmed with "+ appointment.getEmployee().getEmp_first_name()+" "+appointment.getEmployee().getEmp_last_name()+
 					"at "+ appointment.getAppointmentDateTime()+ "\n Please make sure to contact over "+ appointment.getEmployee().getEmp_first_name() + " if you have any queries."
 							+ "\n"
@@ -95,9 +102,11 @@ public class AppointmentServiceImpl implements AppointmentService, Runnable{
 			email.setEmailSubject("Your Appointment Is Confirmed at: " + appointment.getAppointmentDateTime());
 			
 			AppointmentServiceImpl appointmentServiceImpl =  new AppointmentServiceImpl(saveAppointment, emailSenderService, email);
-			Thread emaiThread = new Thread(appointmentServiceImpl);
 			
+			//create and start email thread
+			Thread emaiThread = new Thread(appointmentServiceImpl);
 			emaiThread.start();
+			
 			
 			employee.getEmployeesAppointments().add(appointment);
 			employeeRepository.save(employee);
@@ -107,8 +116,8 @@ public class AppointmentServiceImpl implements AppointmentService, Runnable{
 		
 		return saveAppointment;
 	}
-
-
+	
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

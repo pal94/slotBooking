@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -48,35 +50,10 @@ public class UserController {
 	@Autowired
 	AppointmentService appointmentService;
 	
-	
-	
-//	@GetMapping("/employee")
-//	public List<Employee> getEmployees() {
-//		List<Employee> employees = employeeRepository.findAll();
-//		for(Employee emp:employees) {
-//			String firstName = emp.getEmployeeFirstName();
-//			System.out.print(firstName);
-//		}
-//		return employees;
-//	 
-//	}
-	
 
 	
-//	@GetMapping("/availableTime/{id}")
-//	public String getEmployeeTimings(@PathVariable("id") int employeeId, ModelMap model) throws IOException, EmployeeException {
-//		Optional<Employee> employee = employeeRepository.findById(employeeId);
-//		//String employeeName = employee.get().getEmp_first_name() + employee.get().getEmp_last_name();
-//		List<LocalDateTime> listOfAppointment = employeeService.getAvailableTimingsForEmployee(employee);
-//		model.addAttribute("listAppointment",listOfAppointment);
-//		model.addAttribute("employeeDetails", employee);
-//		System.out.println(listOfAppointment.size());
-//		
-//		return "listEmployeeAppointments";
-//		
-//	}
 	
-	
+	//show the appointment time for the employee with {id}
 	
 	@GetMapping("/showEmployeeTime")
 	public String getEmployeeAndSelectedTime(@RequestParam("employeeId") int employeeId, ModelMap model) throws IOException, EmployeeException {
@@ -98,9 +75,13 @@ public class UserController {
 		
 	} 
 	
+	//save the appointment and send confirmation email
+	
 	@PostMapping("/appointmentConfirmation")
-	public String bookAppointment(@Valid @ModelAttribute("appointmentObj") AppointmentDTO appointment,ModelMap model) throws IOException, AppointmentException {
-		System.out.println("Confirmation page"+ appointment.getEmployeeId() + appointment.getUserFirstName());
+	public String bookAppointment(@Valid @ModelAttribute("appointmentObj") AppointmentDTO appointment,Errors errors, ModelMap model) throws IOException, AppointmentException {
+		if(errors.hasErrors()) {
+			return "employeeInfo";
+		}
 		if(appointment==null) {
 			throw new AppointmentException("No appointment selected");
 		}
@@ -109,15 +90,7 @@ public class UserController {
 		return "appointmentConfirmation";
 		
 	}
-	
-//	@PostMapping("/appointmentConfirmation")
-//	public Appointment bookAppointment(@RequestBody Appointment appointment,ModelMap model) throws IOException {
-//		System.out.println("confimratin class");
-//		appointmentService.bookAppointment(appointment);
-//		model.addAttribute("msg", "Appointment Booked Succesfully");
-//		return appointment;
-//		
-//	}
+
 	
 
 }

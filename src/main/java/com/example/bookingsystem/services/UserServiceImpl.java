@@ -41,29 +41,26 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	
-
 	@Override
 	public Appointment bookAppoitment(String user_id, Appointment appointment) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
+	//this mthod gets date time from this moment
 	public static  void getAppointmentDates(Integer from, Integer to) throws IOException {
 		
 		timings.clear();
 		
-		FileReader fr = new FileReader("config.properties");
-		Properties p = new Properties();
-		
-		p.load(fr);
 		LocalDateTime currentTime = LocalDateTime.now();
 		LocalDateTime tomorrowTime = currentTime.plusDays(1);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		
-		for(int i=from;i<=to;i++) {
+		//get todays time and store in the hashmap
+		for(int i=from;i<to;i++) {
 			String todaysTimeString = null;
 			
-			if(!(i>=10)) {
+			if(i<10) {
 				todaysTimeString = currentTime.toLocalDate() + " 0" + i + ":00";
 			}else {
 				todaysTimeString = currentTime.toLocalDate() + " " + i + ":00";
@@ -78,10 +75,11 @@ public class UserServiceImpl implements UserService{
 			
 		}
 		
+		//get tomorrow's time and store in the hashmap
 		for(int i=from;i<=to;i++) {
 			String tomorrowTimeString = null;
 			
-			if(!(i>=10)) {
+			if(i<10) {
 				tomorrowTimeString = tomorrowTime.toLocalDate() + " 0" + i + ":00";
 			}else {
 				tomorrowTimeString = tomorrowTime.toLocalDate() + " " + i + ":00";

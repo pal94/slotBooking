@@ -13,6 +13,8 @@ public class EmailSenderServiceImpl implements EmailSenderService{
 	public EmailSenderServiceImpl(JavaMailSender mailSender) {
 		this.mailSender=mailSender;
 	}
+	
+	//This service sends the email to the provided email id with contents in the email body
 	@Override
 	public Boolean sendMailToUser(String emailId, EmailBody email) {
 		// TODO Auto-generated method stub

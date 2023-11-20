@@ -20,7 +20,8 @@ public class EmployeeController {
 	
 	@Autowired
 	EmployeeService employeeService;
-
+	
+	//Get All employees
 	@GetMapping("employees/all")
 	public String getAllEmployees(ModelMap model) throws EmployeeException{
 		return findPaginated(1,model);

@@ -36,13 +36,15 @@ public class EmployeeServiceImpl implements EmployeeService{
 		}
 	}
 	
-
+	//This method gets the available times for employee
 	@Override
 	public List<LocalDateTime> getAvailableTimingsForEmployee(Optional<Employee> employee) throws IOException, EmployeeException {
 		// TODO Auto-generated method stub
 		Optional<Employee> currentEmployee = employeeRepository.findById(employee.get().getID());
 		List<LocalDateTime> availableTime = new ArrayList<>();
 		System.out.println(currentEmployee.get().getEmp_first_name());
+		
+		//check if the employee is present
 		if(currentEmployee.isPresent()) {
 			UserServiceImpl.getAppointmentDates(currentEmployee.get().getStartTime(), currentEmployee.get().getEndTime());
 			Map<String, LocalDateTime> timings = UserServiceImpl.timings;
@@ -85,7 +87,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return employeeRepository.findById(Id);
 	}
 
-
+	//apply pagination
 	@Override
 	public Page<Employee> findPaginated(int pageNo, int page) {
 		// TODO Auto-generated method stub

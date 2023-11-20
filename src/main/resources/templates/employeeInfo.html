@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.w3.org/1999/xhtml">
  <head>
+	 <link rel="stylesheet" th:href="@{/css/newspaceship.css}" type="text/css"/>
 	 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
  </head>
 <body>
@@ -20,12 +21,39 @@
         <option th:each="appointment: ${listAppointment}" th:value="${appointment}" th:text="${appointment}"></option>
        </select>
        <h4>Customer Details:</h4>
-       First Name: <input type="text" th:field=*{userFirstName} class="form-control mb-4"/>
-       Last Name: <input type="text" th:field=*{userLastName} class="form-control mb-4"/>
-       Email: <input type="email" th:field=*{userEmail} class="form-control mb-4"/>
-       Phone: <input type="text" th:field=*{userMobile} class="form-control mb-4"/>
+       <div>
+		   <div>
+			   <div class="item item-key">First Name</div>
+			   <input type="text" th:field=*{userFirstName} placeholder="FirstName" class="form-control mb-4"/>	   
+			   <div th:if="${#fields.hasErrors('userFirstName')}" th:errors="*{userFirstName}" class="item fieldInvalid">Name errors</div>
+		   </div>   
+       </div>
+       <div>
+		   <div>
+			   <div class="item item-key">Last Name</div>
+			   <input type="text" th:field=*{userLastName} placeholder="LastName" class="form-control mb-4"/>
+			   <div th:if="${#fields.hasErrors('userLastName')}" th:errors="*{userLastName}" class="item fieldInvalid">Name errors</div>
+		   </div> 
+       </div>
+       <div>
+		   <div>
+			   <div class="item item-key">Email</div>
+			   <input type="email" th:field=*{userEmail} placeholder="Email" class="form-control mb-4"/>
+			   <div th:if="${#fields.hasErrors('userEmail')}" th:errors="*{userEmail}" class="item fieldInvalid">Email errors</div>
+		   </div>
+		   
+       </div>
+       <div>
+		   <div>
+			   <div class="item item-key">Mobile No</div>
+			   <input type="text" th:field=*{userMobile} placeholder="Phone" class="form-control mb-4"/>
+			   <div th:if="${#fields.hasErrors('userMobile')}" th:errors="*{userMobile}" class="item fieldInvalid">Phone errors</div>
+		   </div>
+       </div>
        <input type="hidden" th:value="${employeeId}" th:attr="name='employeeId'"/>
+       <div>
        <button type="submit" value="confirm" class="btn btn-info">Confirm Appointment</button>
+       </div>
        </form>
     </div>
 </div>
